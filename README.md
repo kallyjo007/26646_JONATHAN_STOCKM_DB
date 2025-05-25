@@ -55,3 +55,15 @@ Copy code
 holiday_date      DATE PRIMARY KEY  
 description       VARCHAR2(100)
 ```
+Step 2: Relationships
+Relationship	Type	Explanation
+materials – stock_usage   	1:M	Each material can have multiple usage logs
+materials – stock_reorders	1:M	Each material can have many reorder records
+users – audit_logs        	1:M	Each user can have multiple audit entries
+
+Step 3: Constraints
+NOT NULL on all important fields (e.g., quantity_used, current_stock)
+
+CHECK on fields like status, role
+
+FOREIGN KEY constraints to enforce referential integrity
