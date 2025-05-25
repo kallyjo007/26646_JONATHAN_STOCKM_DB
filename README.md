@@ -73,7 +73,6 @@ Here are the key entities for the project:
 
 1. materials
 ```sql
-Copy code
 material_id       NUMBER PRIMARY KEY  
 material_name     VARCHAR2(100)  
 unit              VARCHAR2(20)  
@@ -82,7 +81,7 @@ threshold_stock   NUMBER DEFAULT 50
 ```
 2. stock_usage
 ```sql
-Copy code
+
 usage_id          NUMBER PRIMARY KEY  
 material_id       NUMBER REFERENCES materials(material_id)  
 used_by           VARCHAR2(100)  
@@ -91,7 +90,7 @@ usage_date        DATE DEFAULT SYSDATE
 ```
 4.stock_reorders
 ```sql
-Copy code
+
 reorder_id        NUMBER PRIMARY KEY  
 material_id       NUMBER REFERENCES materials(material_id)  
 quantity_ordered  NUMBER NOT NULL  
@@ -100,7 +99,7 @@ status            VARCHAR2(20) CHECK (status IN ('Pending', 'Delivered', 'Cancel
 ```
 users
 ```sql
-Copy code
+
 user_id           NUMBER PRIMARY KEY  
 full_name         VARCHAR2(100)  
 role              VARCHAR2(50) CHECK (role IN ('Warehouse Clerk', 'Procurement Officer', 'Admin'))
@@ -108,7 +107,7 @@ role              VARCHAR2(50) CHECK (role IN ('Warehouse Clerk', 'Procurement O
 
 5. audit_logs
 ```sql
-Copy code
+
 log_id            NUMBER PRIMARY KEY  
 user_id           NUMBER REFERENCES users(user_id)  
 operation         VARCHAR2(20)  
@@ -117,7 +116,7 @@ status            VARCHAR2(10) CHECK (status IN ('Allowed', 'Denied'))
 ```
 6. holidays
 ```sql
-Copy code
+
 holiday_date      DATE PRIMARY KEY  
 description       VARCHAR2(100)
 ```
