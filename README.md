@@ -1,7 +1,65 @@
 # 26646_JONATHAN_STOCKM_DB
 PHASE I
 PHASE II
+```sql
+ Business Process Modeling (MIS)
+```
+```sql
+Goal
+Model the Inventory Usage and Reordering Process to show how information flows between departments and how MIS supports decision-making.
+```
+```sql
+ Step 1: Define the Scope
+Business Process:
+
+"Material Usage Logging and Automatic Reordering in a Construction Company."
+
+Objective:
+To ensure accurate material tracking, prevent shortages, and automate restocking based on predefined thresholds.
+
+Expected Outcomes:
+
+Reduced material shortages
+
+Timely restocking
+
+Improved procurement decisions
+```
+```sql
+ Step 2: Identify Key Entities / Actors
+Actor	Role
+Warehouse Clerk	Logs daily material usage
+System	Updates stock levels, checks reorder thresholds
+Procurement Officer	Approves reorder requests
+Supplier	Delivers requested materials
+Database	Stores all data and facilitates report generation
+```
+```sql
+ Step 3: Business Process Diagram (Swimlane)
+You will need to draw a Swimlane BPMN diagram using Lucidchart or draw.io. Here’s a simple diagram structure to guide you:
+
+
+[Start]
+↓
+(Warehouse Clerk) ─ Log Material Usage
+↓
+(System) ─ Update Material Stock
+↓
+(System) ─ Check if stock < threshold?
+↓
+Yes → (System) ─ Generate Reorder Request
+↓
+(Procurement Officer) ─ Review & Approve
+↓
+(Supplier) ─ Fulfill Order
+↓
+(Warehouse Clerk) ─ Update Stock on Delivery
+↓
+[End]
+```
+```sql
 PHASE III
+```
 Step 1: Identify Entities & Attributes
 Here are the key entities for the project:
 
