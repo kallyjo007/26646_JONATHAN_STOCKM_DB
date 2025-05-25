@@ -68,4 +68,4 @@ CHECK on fields like status, role
 
 FOREIGN KEY constraints to enforce referential integrity
 
-<img width="700" src="./pictures/capture.jpg">
+<img width="700" src=".pictures/Capture.JPG">
