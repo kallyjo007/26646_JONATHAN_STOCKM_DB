@@ -115,7 +115,40 @@ CREATE TABLE audit_logs (
     timestamp  TIMESTAMP DEFAULT SYSTIMESTAMP,
     status     VARCHAR2(10) CHECK (status IN ('Allowed', 'Denied'))
 );
+```
+```sql
+insert_data.sql
+sql
+Copy
+Edit
+-- Insert into materials
+INSERT INTO materials VALUES (1, 'Cement', 'bags', 100, 50);
+INSERT INTO materials VALUES (2, 'Bricks', 'pieces', 300, 100);
+INSERT INTO materials VALUES (3, 'Steel Rods', 'meters', 80, 30);
 
+-- Insert into stock_usage
+INSERT INTO stock_usage VALUES (1, 1, 'John', 20, DATE '2025-04-01');
+INSERT INTO stock_usage VALUES (2, 2, 'Alice', 50, DATE '2025-04-02');
+INSERT INTO stock_usage VALUES (3, 1, 'John', 15, DATE '2025-04-03');
+INSERT INTO stock_usage VALUES (4, 3, 'Mike', 10, DATE '2025-04-03');
+
+-- Insert into stock_reorders
+INSERT INTO stock_reorders VALUES (1, 1, 100, DATE '2025-04-05', 'Pending');
+INSERT INTO stock_reorders VALUES (2, 2, 150, DATE '2025-04-06', 'Delivered');
+
+-- Insert into users
+INSERT INTO users VALUES (1, 'John Doe', 'Warehouse Clerk');
+INSERT INTO users VALUES (2, 'Alice Smith', 'Procurement Officer');
+INSERT INTO users VALUES (3, 'Admin User', 'Admin');
+
+-- Insert into audit_logs
+INSERT INTO audit_logs VALUES (1, 1, 'INSERT', SYSTIMESTAMP, 'Allowed');
+INSERT INTO audit_logs VALUES (2, 2, 'UPDATE', SYSTIMESTAMP, 'Denied');
+
+-- Insert into holidays
+INSERT INTO holidays VALUES (DATE '2025-06-01', 'National Construction Day');
+INSERT INTO holidays VALUES (DATE '2025-06-15', 'Maintenance Break');
+```
 -- Table: holidays
 CREATE TABLE holidays (
     holiday_date DATE PRIMARY KEY,
