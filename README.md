@@ -64,29 +64,7 @@ Procurement Officer	Approves reorder requests
 Supplier	Delivers requested materials
 Database	Stores all data and facilitates report generation
 ```
-```sql
- Step 3: Business Process Diagram (Swimlane)
-You will need to draw a Swimlane BPMN diagram using Lucidchart or draw.io. Here’s a simple diagram structure to guide you:
 
-
-[Start]
-↓
-(Warehouse Clerk) ─ Log Material Usage
-↓
-(System) ─ Update Material Stock
-↓
-(System) ─ Check if stock < threshold?
-↓
-Yes → (System) ─ Generate Reorder Request
-↓
-(Procurement Officer) ─ Review & Approve
-↓
-(Supplier) ─ Fulfill Order
-↓
-(Warehouse Clerk) ─ Update Stock on Delivery
-↓
-[End]
-```
 ```sql
 PHASE III
 ```
