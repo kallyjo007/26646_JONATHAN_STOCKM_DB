@@ -68,12 +68,14 @@ CHECK on fields like status, role
 
 FOREIGN KEY constraints to enforce referential integrity
 
-<img width="700" src=".pictures/Capture.JPG">
+<img width="700" src=".Capture.JPG">
 
 ```sql
 phase V
+```
+```sql
 -- Table: materials
-
+```
 CREATE TABLE materials (
     material_id      NUMBER PRIMARY KEY,
     material_name    VARCHAR2(100) NOT NULL,
