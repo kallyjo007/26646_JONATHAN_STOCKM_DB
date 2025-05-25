@@ -115,6 +115,11 @@ CREATE TABLE audit_logs (
     timestamp  TIMESTAMP DEFAULT SYSTIMESTAMP,
     status     VARCHAR2(10) CHECK (status IN ('Allowed', 'Denied'))
 );
+-- Table: holidays
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description  VARCHAR2(100)
+);
 ```
 ```sql
 insert_data.sql
@@ -149,9 +154,4 @@ INSERT INTO audit_logs VALUES (2, 2, 'UPDATE', SYSTIMESTAMP, 'Denied');
 INSERT INTO holidays VALUES (DATE '2025-06-01', 'National Construction Day');
 INSERT INTO holidays VALUES (DATE '2025-06-15', 'Maintenance Break');
 ```
--- Table: holidays
-CREATE TABLE holidays (
-    holiday_date DATE PRIMARY KEY,
-    description  VARCHAR2(100)
-);
-```
+
