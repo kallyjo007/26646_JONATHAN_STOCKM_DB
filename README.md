@@ -75,7 +75,6 @@ phase V
 ```
 ```sql
 -- Table: materials
-```
 CREATE TABLE materials (
     material_id      NUMBER PRIMARY KEY,
     material_name    VARCHAR2(100) NOT NULL,
