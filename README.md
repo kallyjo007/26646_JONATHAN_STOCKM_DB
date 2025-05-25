@@ -69,3 +69,56 @@ CHECK on fields like status, role
 FOREIGN KEY constraints to enforce referential integrity
 
 <img width="700" src=".pictures/Capture.JPG">
+
+```sql
+phase V
+-- Table: materials
+
+CREATE TABLE materials (
+    material_id      NUMBER PRIMARY KEY,
+    material_name    VARCHAR2(100) NOT NULL,
+    unit             VARCHAR2(20) NOT NULL,
+    current_stock    NUMBER NOT NULL,
+    threshold_stock  NUMBER DEFAULT 50
+);
+
+-- Table: stock_usage
+CREATE TABLE stock_usage (
+    usage_id         NUMBER PRIMARY KEY,
+    material_id      NUMBER REFERENCES materials(material_id),
+    used_by          VARCHAR2(100),
+    quantity_used    NUMBER NOT NULL,
+    usage_date       DATE DEFAULT SYSDATE
+);
+
+-- Table: stock_reorders
+CREATE TABLE stock_reorders (
+    reorder_id        NUMBER PRIMARY KEY,
+    material_id       NUMBER REFERENCES materials(material_id),
+    quantity_ordered  NUMBER NOT NULL,
+    order_date        DATE DEFAULT SYSDATE,
+    status            VARCHAR2(20) CHECK (status IN ('Pending', 'Delivered', 'Cancelled'))
+);
+
+-- Table: users
+CREATE TABLE users (
+    user_id    NUMBER PRIMARY KEY,
+    full_name  VARCHAR2(100) NOT NULL,
+    role       VARCHAR2(50) CHECK (role IN ('Warehouse Clerk', 'Procurement Officer', 'Admin'))
+);
+
+-- Table: audit_logs
+CREATE TABLE audit_logs (
+    log_id     NUMBER PRIMARY KEY,
+    user_id    NUMBER REFERENCES users(user_id),
+    operation  VARCHAR2(20),
+    timestamp  TIMESTAMP DEFAULT SYSTIMESTAMP,
+    status     VARCHAR2(10) CHECK (status IN ('Allowed', 'Denied'))
+);
+
+-- Table: holidays
+CREATE TABLE holidays (
+    holiday_date DATE PRIMARY KEY,
+    description  VARCHAR2(100)
+);
+```
