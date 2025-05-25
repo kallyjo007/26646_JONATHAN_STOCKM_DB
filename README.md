@@ -1,5 +1,34 @@
 # 26646_JONATHAN_STOCKM_DB
 PHASE I
+<h2>Problem Definition</h2>
+
+Construction companies often face challenges in managing their materials inventory. Manual tracking methods result in frequent stockouts, overstocking, and a lack of real-time visibility. These inefficiencies delay construction timelines and inflate operational costs.
+
+<h2>Context</h2>
+
+The system is designed for mid-sized construction firms in Rwanda. It will be deployed in offices and warehouse locations to monitor material usage, stock levels, and automate reordering.
+
+<h2>Target Users</h2>
+
+<li>Warehouse Clerks</li>
+
+<li>Procurement Officers</li>
+
+<li>Site Managers</li>
+
+<li>System Administrators</li>
+
+<h2>Goals</h2>
+
+<li>Track and log daily material usage</li>
+
+<li>Automatically trigger reorders when stock levels fall below thresholds</li>
+
+<li>Prevent unauthorized changes to stock records</li>
+
+<li>Provide reporting for MIS and management decision-making</li>
+
+
 ```sql
 PHASE II
 
@@ -321,3 +350,44 @@ BEGIN
 END;
 /
 ```
+```sql
+CREATE OR REPLACE PACKAGE stock_pkg IS
+  FUNCTION Get_Total_Usage(p_material_id NUMBER) RETURN NUMBER;
+  PROCEDURE Restock_If_Low(p_material_id NUMBER);
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY stock_pkg IS
+
+  FUNCTION Get_Total_Usage(p_material_id NUMBER) RETURN NUMBER IS
+    v_total NUMBER;
+  BEGIN
+    SELECT NVL(SUM(quantity_used), 0)
+    INTO v_total
+    FROM stock_usage
+    WHERE material_id = p_material_id;
+    RETURN v_total;
+  END;
+
+  PROCEDURE Restock_If_Low(p_material_id NUMBER) IS
+    v_stock NUMBER;
+  BEGIN
+    SELECT current_stock INTO v_stock FROM materials WHERE material_id = p_material_id;
+
+    IF v_stock < 50 THEN
+      INSERT INTO stock_reorders (reorder_id, material_id, quantity_ordered, order_date, status)
+      VALUES (stock_reorders_seq.NEXTVAL, p_material_id, 100, SYSDATE, 'Pending');
+    END IF;
+  END;
+
+END stock_pkg;
+/
+
+```
+4. Add a Package
+### Normalization Summary
+
+- **1NF**: All tables have atomic values (e.g., `quantity_used`, `material_name`)  
+- **2NF**: No partial dependencies — all attributes depend fully on the primary key  
+- **3NF**: No transitive dependencies — every non-key field depends only on the primary key
+
