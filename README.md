@@ -1,7 +1,8 @@
 # 26646_JONATHAN_STOCKM_DB
 PHASE I
-PHASE II
 ```sql
+PHASE II
+
  Business Process Modeling (MIS)
 ```
 ```sql
@@ -214,3 +215,109 @@ INSERT INTO holidays VALUES (DATE '2025-06-01', 'National Construction Day');
 INSERT INTO holidays VALUES (DATE '2025-06-15', 'Maintenance Break');
 ```
 
+✅ PHASE VI: Database Interaction & Transactions
+This phase involves procedures, functions, exception handling, transactions, and optionally packages.
+
+📌 Step 1: DML & DDL Operations
+Already covered:
+
+INSERT into materials, stock_usage, etc.
+
+Table definitions (DDL)
+
+Now we’ll build procedures and functions to interact with the data.
+
+📁 procedures_functions.sql
+🔧 1. Function: Get_Total_Usage(material_id)
+```sql
+CREATE OR REPLACE FUNCTION Get_Total_Usage(p_material_id IN NUMBER)
+RETURN NUMBER IS
+    v_total NUMBER;
+BEGIN
+    SELECT NVL(SUM(quantity_used), 0)
+    INTO v_total
+    FROM stock_usage
+    WHERE material_id = p_material_id;
+
+    RETURN v_total;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN -1;
+END;
+/
+```
+2. Procedure: Restock_If_Low(material_id)
+```sql
+   CREATE OR REPLACE PROCEDURE Restock_If_Low(p_material_id IN NUMBER) IS
+    v_stock NUMBER;
+BEGIN
+    SELECT current_stock INTO v_stock FROM materials WHERE material_id = p_material_id;
+
+    IF v_stock < 50 THEN
+        INSERT INTO stock_reorders (reorder_id, material_id, quantity_ordered, order_date, status)
+        VALUES (stock_reorders_seq.NEXTVAL, p_material_id, 100, SYSDATE, 'Pending');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error occurred during reorder.');
+END;
+/
+```
+
+ 3. Cursor-based Reporting Procedure
+```sql
+    CREATE OR REPLACE PROCEDURE Print_Stock_Usage IS
+    CURSOR usage_cur IS
+        SELECT m.material_name, s.quantity_used, s.usage_date
+        FROM stock_usage s
+        JOIN materials m ON s.material_id = m.material_id;
+BEGIN
+    FOR rec IN usage_cur LOOP
+        DBMS_OUTPUT.PUT_LINE('Material: ' || rec.material_name || 
+                             ', Used: ' || rec.quantity_used || 
+                             ', Date: ' || rec.usage_date);
+    END LOOP;
+END;
+/
+```
+ PHASE VII: Advanced Logic & Auditing
+📌 1. Holidays Table
+
+Already created: holidays(holiday_date, description)
+
+📌 2. Trigger: Block DML on Weekdays & Holidays
+```sql
+CREATE OR REPLACE TRIGGER trg_block_weekday_holiday_dml
+BEFORE INSERT OR UPDATE OR DELETE ON stock_usage
+FOR EACH ROW
+DECLARE
+    v_day VARCHAR2(10);
+    v_today DATE := TRUNC(SYSDATE);
+    v_is_holiday NUMBER;
+BEGIN
+    SELECT TO_CHAR(v_today, 'DY') INTO v_day FROM DUAL;
+    
+    SELECT COUNT(*) INTO v_is_holiday
+    FROM holidays
+    WHERE holiday_date = v_today;
+    
+    IF v_day IN ('MON', 'TUE', 'WED', 'THU', 'FRI') OR v_is_holiday > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'DML not allowed on weekdays or holidays.');
+    END IF;
+END;
+/
+```
+
+3. Auditing Trigger
+```sql
+   CREATE OR REPLACE TRIGGER trg_audit_dml
+AFTER INSERT OR UPDATE OR DELETE ON stock_usage
+FOR EACH ROW
+DECLARE
+    v_user_id NUMBER := 1; -- simulate logged-in user
+BEGIN
+    INSERT INTO audit_logs (log_id, user_id, operation, timestamp, status)
+    VALUES (audit_logs_seq.NEXTVAL, v_user_id, 'DML', SYSTIMESTAMP, 'Allowed');
+END;
+/
+```
