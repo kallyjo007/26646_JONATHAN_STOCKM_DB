@@ -121,9 +121,9 @@ CREATE TABLE holidays (
     description  VARCHAR2(100)
 );
 ```
-```sql
+
 insert_data.sql
-sql
+```sql
 Copy
 Edit
 -- Insert into materials
